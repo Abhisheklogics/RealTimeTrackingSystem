@@ -58,7 +58,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let startLatLng = null;
 let userMarker = null;
 let rangeCircle = null;
-let lastAlertTime = 0; // Timestamp to throttle alerts
+let lastAlertTime = 0;
+let alertPopup = null;
 
 if (navigator.geolocation) {
   navigator.geolocation.watchPosition(
@@ -70,14 +71,13 @@ if (navigator.geolocation) {
 
       const currentLatLng = L.latLng(latitude, longitude);
 
-      // First-time setup
       if (!startLatLng) {
         startLatLng = currentLatLng;
 
         userMarker = L.marker(currentLatLng).addTo(map);
 
         rangeCircle = L.circle(startLatLng, {
-          radius: 1, // 1 meter
+          radius: 2, 
           color: 'green',
           fillOpacity: 0.1
         }).addTo(map);
@@ -88,13 +88,25 @@ if (navigator.geolocation) {
         map.setView(currentLatLng);
 
         const distance = currentLatLng.distanceTo(startLatLng); // in meters
-        console.log(`📏 Distance: ${distance.toFixed(2)} meters`);
+        console.log(` Distance: ${distance.toFixed(2)} meters`);
 
         const now = Date.now();
 
-        if (distance > 1 && now - lastAlertTime > 2000) {
-          alert(" Kaha jaa raha hai bahi? Ruk ja, me aa raha hu!");
+        if (distance > 2 && now - lastAlertTime > 3000) {
           lastAlertTime = now;
+
+          // Remove previous popup if exists
+          if (alertPopup) {
+            map.removeLayer(alertPopup);
+          }
+
+          // Show a nice Leaflet popup
+          alertPopup = L.popup()
+            .setLatLng(currentLatLng)
+            .setContent(
+              `<b> Alert!</b><br/>You have moved beyond the safe zone.<br/>
+            )
+            .openOn(map);
         }
       }
     },
@@ -104,7 +116,7 @@ if (navigator.geolocation) {
     {
       enableHighAccuracy: true,
       maximumAge: 0,
-      timeout: 1000 // Faster updates
+      timeout: 2000
     }
   );
 }
