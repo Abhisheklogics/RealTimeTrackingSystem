@@ -55,11 +55,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Abhishek Kumar Tracking System'
 }).addTo(map);
 
-let markers = {};
 let startLatLng = null;
 let userMarker = null;
 let rangeCircle = null;
-let isOutOfRange = false;
+let lastAlertTime = 0; // Timestamp to throttle alerts
 
 if (navigator.geolocation) {
   navigator.geolocation.watchPosition(
@@ -71,36 +70,31 @@ if (navigator.geolocation) {
 
       const currentLatLng = L.latLng(latitude, longitude);
 
-      // First location fix
+      // First-time setup
       if (!startLatLng) {
         startLatLng = currentLatLng;
 
-        // Place user's marker
         userMarker = L.marker(currentLatLng).addTo(map);
 
-        // Show 2-meter radius circle
         rangeCircle = L.circle(startLatLng, {
-          radius: 2,
+          radius: 1, // 1 meter
           color: 'green',
           fillOpacity: 0.1
         }).addTo(map);
 
         map.setView(currentLatLng, 20);
       } else {
-        // Update marker position
         userMarker.setLatLng(currentLatLng);
         map.setView(currentLatLng);
 
-        // Calculate distance from starting point
         const distance = currentLatLng.distanceTo(startLatLng); // in meters
-        console.log(`Distance from start: ${distance.toFixed(2)} meters`);
+        console.log(`📏 Distance: ${distance.toFixed(2)} meters`);
 
-        // Alert if out of range
-        if (distance > 2 && !isOutOfRange) {
-          alert("Kaha jaa raha hai bahi ruk me abhi aa raha hu");
-          isOutOfRange = true;
-        } else if (distance <= 2 && isOutOfRange) {
-          isOutOfRange = false; // reset alert when back inside
+        const now = Date.now();
+
+        if (distance > 1 && now - lastAlertTime > 2000) {
+          alert(" Kaha jaa raha hai bahi? Ruk ja, me aa raha hu!");
+          lastAlertTime = now;
         }
       }
     },
@@ -110,7 +104,7 @@ if (navigator.geolocation) {
     {
       enableHighAccuracy: true,
       maximumAge: 0,
-      timeout: 2000
+      timeout: 1000 // Faster updates
     }
   );
 }
