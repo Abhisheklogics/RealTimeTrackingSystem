@@ -97,7 +97,7 @@ if (navigator.geolocation) {
 
         // Alert if out of range
         if (distance > 2 && !isOutOfRange) {
-          alert("⚠️ You are out of the 2-meter safe zone!");
+          alert("Kaha jaa raha hai bahi ruk me abhi aa raha hu");
           isOutOfRange = true;
         } else if (distance <= 2 && isOutOfRange) {
           isOutOfRange = false; // reset alert when back inside
