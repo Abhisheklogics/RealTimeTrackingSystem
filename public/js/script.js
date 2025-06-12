@@ -82,7 +82,7 @@ if (navigator.geolocation) {
           fillOpacity: 0.1
         }).addTo(map);
 
-        map.setView(currentLatLng, 20);
+        map.setView(currentLatLng, 18);
       } else {
         userMarker.setLatLng(currentLatLng);
         map.setView(currentLatLng);
