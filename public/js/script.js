@@ -95,18 +95,20 @@ if (navigator.geolocation) {
         if (distance > 2 && now - lastAlertTime > 3000) {
           lastAlertTime = now;
 
-          // Remove previous popup if exists
+          
           if (alertPopup) {
             map.removeLayer(alertPopup);
           }
 
-          // Show a nice Leaflet popup
-          alertPopup = L.popup()
-            .setLatLng(currentLatLng)
-            .setContent(
-              `<b> Alert!</b><br/>You have moved beyond the safe zone.<br/>
-            )
-            .openOn(map);
+          
+         alertPopup = L.popup()
+  .setLatLng(currentLatLng)
+  .setContent(
+    `<b>Aram se 😊</b><br/>
+     Lagta hai aap 2 meter ki limit ke bahar aa gaye hain.<br/>
+     Zarurat ho to wapas aa jaiye, koi jaldi nahi hai!`
+  )
+  .openOn(map);
         }
       }
     },
