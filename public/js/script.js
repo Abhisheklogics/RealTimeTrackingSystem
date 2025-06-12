@@ -49,7 +49,7 @@
 
 let socket = io();
 
-let map = L.map('map').setView([0, 0], 18);
+let map = L.map('map').setView([0, 0], 16);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Abhishek Kumar Tracking System'
@@ -82,12 +82,12 @@ if (navigator.geolocation) {
           fillOpacity: 0.1
         }).addTo(map);
 
-        map.setView(currentLatLng, 18);
+        map.setView(currentLatLng, 16);
       } else {
         userMarker.setLatLng(currentLatLng);
         map.setView(currentLatLng);
 
-        const distance = currentLatLng.distanceTo(startLatLng); // in meters
+        const distance = currentLatLng.distanceTo(startLatLng);
         console.log(` Distance: ${distance.toFixed(2)} meters`);
 
         const now = Date.now();
