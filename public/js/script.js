@@ -18,14 +18,14 @@ if(navigator.geolocation)
 }
 )
 }
-let map=L.map('map').setView([0,0],10)
+let map=L.map('map').setView([0,0],16)
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution:'Abhishek kumar Tracking System'
 }).addTo(map);
 let markers={}
 socket.on('location-send',(data)=>{
 let {id,latitude,longitude}=data
-map.setView([latitude,longitude],19)
+map.setView([latitude,longitude],16)
 if(markers[id])
 {
 markers[id].setLatLng([latitude,longitude])
